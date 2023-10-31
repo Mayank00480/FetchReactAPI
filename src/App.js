@@ -17,22 +17,31 @@ function App() {
     setError(null);
     setIsLoading(true);
     try{
-       const response  = await fetch('https://swapi.dev/api/films')
+       const response  = await fetch('https://react-app-64b82-default-rtdb.firebaseio.com/movies.json')
        if(!response.ok){
         throw new Error('Something went wrong ...Retrying');
        }
        const res = await response.json();
-       const actualData = res.results.map((data)=>{
+       let LoadedData = [];
+       for(let key in res){
+          LoadedData.push({
+            id : key,
+            title : res[key].title,
+            openingText : res[key].openingText,
+            releaseDate : res[key].releaseDat 
+          })
+       }
+    /*   const actualData = res.results.map((data)=>{
         return {
           id : data.episode_id,
           title : data.title,
           openingText : data.opening_crawl,
           releaseDate : data.release_date
         } 
-  })
+  })*/
     
     
-   setMovies(actualData);
+   setMovies(LoadedData);
   
     }
     
@@ -43,7 +52,9 @@ function App() {
     setIsLoading(false);
    }
    
-  
+const reload = () =>{
+  fetchMovies();
+}  
 
   return (
     <React.Fragment>
@@ -52,7 +63,7 @@ function App() {
         <button onClick = {fetchMovies}>Fetch Movies</button>
       </section>
       <section>
-      {!isLoading && <MoviesList movies={movies} />}
+      {!isLoading && <MoviesList reload = {reload} movies={movies} />}
       {isLoading && <p>Loading...</p>}
       {!isLoading && !error && movies.length == 0 && <p>No Movies Found</p>}
       {!isLoading && error && <p>{error}</p>}

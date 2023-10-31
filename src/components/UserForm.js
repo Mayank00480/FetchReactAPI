@@ -5,12 +5,19 @@ const [title , setTitle] = useState("");
 const [text,setText] = useState("");
 const [date , setDate] = useState("");
 
-function submitHandler(e) {
+async function submitHandler(e) {
 e.preventDefault();
-console.log(title,text,date)
-setTitle("")
-setDate("")
-setText("")
+const myObj = {
+    title : title,
+        openingText : text,
+         releaseDat : date
+}
+const data = await fetch('https://react-app-64b82-default-rtdb.firebaseio.com/movies.json',{
+    method : 'POST',
+    body : JSON.stringify(myObj)
+})
+const response  = await data.json();
+console.log(response)
 }
   return (
     <form onSubmit={submitHandler}>
@@ -28,7 +35,7 @@ setText("")
       <br/>
       <label>Release Date</label>
       <br/>
-      <input type = "date" value = {date} onChange={(e) =>{
+      <input type = "text" value = {date} onChange={(e) =>{
         setDate(e.target.value);
       }}/>
       <button style = {{margin : '10px 0px'}}type = "submit" >Add New Movies</button>
