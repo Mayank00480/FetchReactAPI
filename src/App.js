@@ -2,16 +2,17 @@ import React,{useEffect, useState} from 'react';
 
 import MoviesList from './components/MoviesList';
 import './App.css';
+import UserForm from './components/UserForm';
 
 function App() {
   const [movies,setMovies] = useState([])
   const [isLoading , setIsLoading] = useState(false);
   const[error ,setError] = useState(null);
 
-   useEffect(() =>{
+ /*  useEffect(() =>{
       fetchMovies()
    },[]); 
-   
+   */
    const fetchMovies = async() =>{
     setError(null);
     setIsLoading(true);
@@ -47,6 +48,7 @@ function App() {
   return (
     <React.Fragment>
       <section>
+        <UserForm/>
         <button onClick = {fetchMovies}>Fetch Movies</button>
       </section>
       <section>
